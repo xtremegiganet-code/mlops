@@ -1,23 +1,25 @@
-version: '1.0'
+version: "1.0"
 
 tasks:
   cleanup:
-    description: "Remove temporary files and build artifacts"
+    description: "Clean temporary files and build artifacts"
     steps:
-      - name: Remove Python cache files
-        run: |
-          find . -type d -name "__pycache__" -exec rm -rf {} +
-          find . -type f -name "*.pyc" -delete
-      - name: Remove temporary files
-        run: rm -rf tmp/ dist/ build/
+      - name: Remove node_modules
+        run: rm -rf node_modules
+
+      - name: Remove build and coverage directories
+        run: rm -rf dist build coverage
+
+      - name: Remove npm cache (optional)
+        run: npm cache clean --force || true
 
   test:
-    description: "Run Python tests using nose"
+    description: "Run unit tests using Jest"
     steps:
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install nose
-      - name: Run tests with nose
-        run: nosetests tests/ --with-coverage --cover-package=your_package_name
+          npm install
+          npm install --save-dev jest
+
+      - name: Run Jest tests
+        run: npx jest --coverage
