@@ -1,0 +1,6 @@
+# tests/test_example.py
+import unittest
+
+class ExampleTest(unittest.TestCase):
+    def test_addition(self):
+        self.assertEqual(1 + 1, 2)
