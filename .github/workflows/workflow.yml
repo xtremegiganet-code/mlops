@@ -1,4 +1,4 @@
-name: Python Lint and Test
+name: Python Lint and Jest Tests
 
 on:
   push:
@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # --------------------
+      # Python Lint Section
+      # --------------------
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -26,11 +29,18 @@ jobs:
         run: |
           flake8 . || true
 
-      - name: Install test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
+      # --------------------
+      # JavaScript Jest Test Section
+      # --------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Run unit tests
+      - name: Install Node.js dependencies
         run: |
-          pytest --maxfail=1 --disable-warnings -q
+          npm install
+
+      - name: Run Jest tests
+        run: |
+          npm test
