@@ -36,11 +36,11 @@ jobs:
       # --------------------
       - name: Run flake8
         run: |
-          flake8 .dir1/dir2/
+          flake8 .github/workflows/
 
       # --------------------
       # Run Python tests with pytest
       # --------------------
       - name: Run tests with pytest
         run: |
-          pytest .dir1/dir2/tests
+          pytest .github/workflows/tests
