@@ -29,3 +29,19 @@ jobs:
       - name: Run Python unit tests
         run: |
           python -m unittest discover -s .github/workflows/tests
+
+      # --------------------
+      # Jest test step
+      # --------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Node.js dependencies
+        run: |
+          npm install
+
+      - name: Run Jest tests
+        run: |
+          npm test
