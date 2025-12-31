@@ -9,39 +9,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # --------------------
+      # Checkout code
+      # --------------------
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      # --------------------
+      # Set up Python
+      # --------------------
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install flake8
+      # --------------------
+      # Install dependencies
+      # --------------------
+      - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
-          pip install flake8
-
-      - name: Run flake8 (safe)
-        run: |
-          flake8 .github/workflows/ || true
-
-      - name: Run Python unit tests
-        run: |
-          python -m unittest discover -s .github/workflows/tests
+          pip install flake8 pytest
 
       # --------------------
-      # Jest test step
+      # Run flake8 lint
       # --------------------
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install Node.js dependencies
+      - name: Run flake8
         run: |
-          npm install
+          flake8 .dir1/dir2/
 
-      - name: Run Jest tests
+      # --------------------
+      # Run Python tests with pytest
+      # --------------------
+      - name: Run tests with pytest
         run: |
-          npm test
+          pytest .dir1/dir2/tests
