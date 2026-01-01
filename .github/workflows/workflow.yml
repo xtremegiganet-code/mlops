@@ -1,4 +1,4 @@
-name: Python Lint and Test
+name: ci-cd-final-project Lint and Test
 
 on:
   push:
@@ -6,7 +6,12 @@ on:
 
 jobs:
   lint-and-test:
+    # --------------------
+    # Container (shows container initialization logs)
+    # --------------------
     runs-on: ubuntu-latest
+    container:
+      image: python:3.10-slim
 
     steps:
       # --------------------
@@ -16,12 +21,13 @@ jobs:
         uses: actions/checkout@v3
 
       # --------------------
-      # Set up Python
+      # Show container info (explicit log visibility)
       # --------------------
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - name: Show container environment
+        run: |
+          echo "Running inside container:"
+          python --version
+          cat /etc/os-release
 
       # --------------------
       # Install dependencies
@@ -36,11 +42,22 @@ jobs:
       # --------------------
       - name: Run flake8
         run: |
+          echo "Starting flake8 linting..."
           flake8 .github/workflows/
+          echo "Flake8 completed successfully."
 
       # --------------------
       # Run Python tests with pytest
       # --------------------
       - name: Run tests with pytest
         run: |
-          pytest .github/workflows/tests
+          echo "Starting unit tests..."
+          pytest .github/workflows/tests -v --tb=short
+          echo "Unit tests completed."
+
+      # --------------------
+      # Final success message
+      # --------------------
+      - name: Job completion message
+        run: |
+          echo "✅ CI job completed successfully!"
